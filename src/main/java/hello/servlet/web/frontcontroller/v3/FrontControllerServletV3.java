@@ -1,5 +1,6 @@
 package hello.servlet.web.frontcontroller.v3;
 
+import hello.servlet.web.frontcontroller.FrontController;
 import hello.servlet.web.frontcontroller.ModelView;
 import hello.servlet.web.frontcontroller.MyView;
 import hello.servlet.web.frontcontroller.v3.controller.MemberFormControllerV3;
@@ -24,7 +25,6 @@ public class FrontControllerServletV3 extends HttpServlet {
         controllerMap.put("/front-controller/v3/members/new-form", new MemberFormControllerV3());
         controllerMap.put("/front-controller/v3/members/save", new MemberSaveControllerV3());
         controllerMap.put("/front-controller/v3/members", new MemberListControllerV3());
-
     }
 
     @Override
@@ -39,7 +39,7 @@ public class FrontControllerServletV3 extends HttpServlet {
             return;
         }
 
-        Map<String, String> paramMap = createParamMap(request);
+        Map<String, String> paramMap = FrontController.createParamMap(request);
 
         ModelView mv = controllerV3.process(paramMap);
 
@@ -51,13 +51,5 @@ public class FrontControllerServletV3 extends HttpServlet {
         String viewName = mv.getViewName();
         MyView view = new MyView("/WEB-INF/views/" + viewName + ".jsp");
         return view;
-    }
-
-    private Map<String, String> createParamMap(HttpServletRequest request) {
-        //paramMap
-        Map<String, String> paramMap = new HashMap<>();
-        request.getParameterNames().asIterator()
-                .forEachRemaining(paramName -> paramMap.put(paramName, request.getParameter(paramName)));
-        return paramMap;
     }
 }
